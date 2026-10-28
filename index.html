@@ -47,310 +47,353 @@
 </head>
 <body class="text-gray-900 pb-20">
 
-  <!-- Top Blue Navbar -->
-  <header class="bg-brand-blue text-white p-4 sticky top-0 z-50 shadow-md">
-    <div class="max-w-4xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="bg-white p-2 rounded-xl text-brand-red flex items-center justify-center">
-          <i class="fa-solid fa-heart-pulse text-2xl text-red-600"></i>
+  <!-- ================= 1. LOGIN SCREEN ================= -->
+  <div id="login-container" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-900 to-indigo-900">
+    <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-md w-full space-y-6 border-4 border-blue-200">
+      <div class="text-center space-y-2">
+        <div class="bg-blue-100 text-brand-blue w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl shadow-inner">
+          <i class="fa-solid fa-heart-pulse text-red-600"></i>
         </div>
-        <div>
-          <h1 class="text-2xl font-extrabold leading-tight" id="app-title">Senior Care</h1>
-          <p class="text-xs text-blue-100" id="app-subtitle">Healthcare & Tele-Consultation Companion</p>
-        </div>
+        <h1 class="text-2xl font-black text-brand-blue" id="login-app-title">Senior Care Login</h1>
+        <p class="text-sm text-gray-600" id="login-app-subtitle">Secure access for elderly patients & family</p>
       </div>
-      <div class="flex items-center space-x-3">
-        <!-- Audio Guide Button -->
-        <button onclick="speakInstructions()" class="bg-transparent border-2 border-yellow-400 text-yellow-300 font-bold px-3 py-1.5 rounded-xl shadow text-sm hover:bg-yellow-400 hover:text-gray-900 transition flex items-center space-x-1">
-          <i class="fa-solid fa-volume-high"></i>
-          <span id="btn-voice-header">Audio Guide</span>
+
+      <form id="login-form" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block font-bold text-sm mb-1 text-gray-700" id="lbl-login-mobile">Mobile Number / கைபேசி எண்</label>
+          <input type="tel" id="login-mobile" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full p-4 border-2 border-gray-300 rounded-2xl text-base focus:border-brand-blue outline-none">
+        </div>
+
+        <div id="otp-group" class="hidden space-y-2">
+          <label class="block font-bold text-sm text-gray-700" id="lbl-login-otp">Enter OTP / ஓடிபி உள்ளிடவும் (Hint: 1234)</label>
+          <input type="text" id="login-otp" placeholder="Enter 4-digit OTP" class="w-full p-4 border-2 border-emerald-500 rounded-2xl text-base text-center tracking-widest font-bold outline-none bg-emerald-50">
+        </div>
+
+        <button type="button" id="btn-send-otp" onclick="requestOTP()" class="w-full bg-brand-blue text-white font-bold p-4 rounded-2xl shadow hover:bg-blue-800 transition text-base">
+          <span id="txt-send-otp">Send OTP / ஓடிபி அனுப்புக</span>
         </button>
-        <!-- Language Switcher -->
-        <button onclick="toggleLanguage()" class="bg-white text-brand-blue font-bold px-3 py-1.5 rounded-xl shadow text-sm hover:bg-gray-100 transition flex items-center space-x-1">
-          <span id="lang-en" class="text-brand-blue font-bold">English</span>
-          <span class="text-gray-400">|</span>
-          <span id="lang-ta" class="text-gray-600 font-normal">தமிழ்</span>
-        </button>
-      </div>
-    </div>
-  </header>
 
-  <main class="max-w-4xl mx-auto p-4 space-y-5">
-
-    <!-- Red SOS Emergency Ambulance Card -->
-    <div class="bg-red-600 text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center space-x-4">
-          <div class="bg-white text-red-600 p-4 rounded-2xl shadow-inner flex items-center justify-center">
-            <i class="fa-solid fa-truck-medical text-3xl"></i>
-          </div>
-          <div>
-            <span class="bg-red-800 text-red-100 text-xs uppercase font-extrabold px-3 py-1 rounded-full tracking-wider" id="sos-badge">24/7 Government Emergency</span>
-            <h2 class="text-2xl font-extrabold mt-1" id="sos-title">Need Immediate Medical Assistance?</h2>
-            <p class="text-sm text-red-100" id="sos-desc">Instant 108 Ambulance dispatch and priority emergency triage</p>
-          </div>
-        </div>
-        <button onclick="triggerSOS()" class="bg-yellow-400 text-gray-900 font-black px-6 py-4 rounded-2xl shadow-lg border-2 border-yellow-300 text-lg hover:bg-yellow-300 active:scale-95 transition flex items-center justify-center space-x-2 whitespace-nowrap w-full md:w-auto">
-          <i class="fa-solid fa-phone"></i>
-          <span id="sos-btn-text">CALL AMBULANCE (108)</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Main Navigation Tabs Bar -->
-    <div class="bg-white rounded-2xl p-2 shadow high-contrast-card flex items-center justify-between gap-1 overflow-x-auto">
-      <button onclick="switchTab('profile')" id="nav-profile" class="tab-btn active flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 transition">
-        <i class="fa-solid fa-id-card text-lg"></i>
-        <span id="tab-txt-profile">Profile</span>
-      </button>
-      <button onclick="switchTab('symptoms')" id="nav-symptoms" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
-        <i class="fa-solid fa-stethoscope text-lg"></i>
-        <span id="tab-txt-symptoms">Symptoms & Care</span>
-      </button>
-      <button onclick="switchTab('doctors')" id="nav-doctors" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
-        <i class="fa-solid fa-user-doctor text-lg"></i>
-        <span id="tab-txt-doctors">Doctors</span>
-      </button>
-      <button onclick="switchTab('pills')" id="nav-pills" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
-        <i class="fa-solid fa-pills text-lg"></i>
-        <span id="tab-txt-pills">Pill Reminders</span>
-      </button>
-      <button onclick="switchTab('vitals')" id="nav-vitals" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
-        <i class="fa-solid fa-heart-pulse text-lg"></i>
-        <span id="tab-txt-vitals">Vitals Log</span>
-      </button>
-    </div>
-
-    <!-- TAB 1: Patient Basic Profile Registration -->
-    <section id="sec-profile" class="tab-content bg-white p-6 rounded-2xl shadow high-contrast-card">
-      <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <div>
-          <h2 class="font-extrabold text-xl text-gray-800" id="profile-title">Patient Basic Registration</h2>
-          <p class="text-xs text-gray-500" id="profile-subtitle">Stored locally on device for hospital check-ins and tele-consultations</p>
-        </div>
-        <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold flex items-center">
-          <i class="fa-solid fa-lock mr-1"></i> Encrypted & Local
-        </span>
-      </div>
-      <form id="patient-form" onsubmit="savePatientInfo(event)" class="space-y-4">
-        <div>
-          <label class="block font-bold text-sm mb-1" id="lbl-name">Full Name / பெயர்</label>
-          <input type="text" id="patient-name" required placeholder="e.g. Ramasamy M" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
-        </div>
-        <div>
-          <label class="block font-bold text-sm mb-1" id="lbl-mobile">Mobile Number / கைபேசி எண்</label>
-          <input type="tel" id="patient-mobile" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
-        </div>
-        <div>
-          <label class="block font-bold text-sm mb-1" id="lbl-aadhar">Aadhaar Card / ஆதார் எண்</label>
-          <input type="text" id="patient-aadhar" required pattern="[0-9]{12}" placeholder="12-digit Aadhaar number" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
-          <p class="text-xs text-gray-500 mt-1" id="aadhar-note">Stored securely for emergency hospital admission</p>
-        </div>
-        <button type="submit" class="w-full bg-brand-blue text-white btn-senior rounded-xl shadow hover:bg-blue-800 transition text-base">
-          <i class="fa-solid fa-floppy-disk mr-2"></i><span id="btn-save-patient">Save Patient Profile</span>
+        <button type="submit" id="btn-verify-otp" class="hidden w-full bg-brand-green text-white font-bold p-4 rounded-2xl shadow hover:bg-green-800 transition text-base">
+          <span id="txt-verify-otp">Verify & Login / உள்நுழைய</span>
         </button>
       </form>
-    </section>
 
-    <!-- TAB 2: Diseases, Symptoms, Remedies & Medicines -->
-    <section id="sec-symptoms" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
-      <div class="flex items-center justify-between border-b pb-3 mb-4">
-        <div>
-          <h2 class="font-extrabold text-xl text-gray-800" id="symptoms-title">Symptoms & Care Guidelines</h2>
-          <p class="text-xs text-gray-500" id="symptoms-subtitle">Choose your symptom to view first aid, tablets, and diet recommendations</p>
-        </div>
+      <div class="text-center pt-2">
+        <button onclick="toggleLanguage()" class="text-xs font-bold text-brand-blue underline">
+          Switch Language (English / தமிழ்)
+        </button>
       </div>
+    </div>
+  </div>
 
-      <!-- Filter Buttons -->
-      <div class="flex space-x-2 mb-4">
-        <button onclick="filterDiseases('all')" id="tab-all" class="flex-1 py-2 text-xs font-bold rounded-xl bg-brand-blue text-white">All</button>
-        <button onclick="filterDiseases('infectious')" id="tab-inf" class="flex-1 py-2 text-xs font-bold rounded-xl bg-gray-200 text-gray-800">Infectious</button>
-        <button onclick="filterDiseases('chronic')" id="tab-chr" class="flex-1 py-2 text-xs font-bold rounded-xl bg-gray-200 text-gray-800">Chronic (NCD)</button>
-      </div>
+  <!-- ================= 2. MAIN APPLICATION CONTAINER (Hidden until login) ================= -->
+  <div id="main-app-container" class="hidden">
 
-      <!-- Disease Search Box -->
-      <div class="mb-4">
-        <input type="text" id="disease-search" oninput="renderDiseases()" placeholder="Search symptom / நோய் தேடுக..." class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-      </div>
-
-      <!-- Disease Cards List -->
-      <div id="disease-list" class="space-y-4">
-        <!-- Dynamic Cards -->
-      </div>
-    </section>
-
-    <!-- TAB 3: Nearby Doctor Contacts & Tele-Appointment -->
-    <section id="sec-doctors" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
-      <div class="flex items-center space-x-2 border-b pb-3 mb-4">
-        <i class="fa-solid fa-user-doctor text-brand-blue text-2xl"></i>
-        <div>
-          <h2 class="font-extrabold text-xl text-gray-800" id="doctor-title">Nearby Doctors & Tele-Consultation</h2>
-          <p class="text-xs text-gray-500" id="doctor-subtitle">Direct phone dialers & consultation requests</p>
-        </div>
-      </div>
-
-      <!-- Doctor Contact Cards -->
-      <div class="space-y-3 mb-6">
-        <!-- Doctor 1 -->
-        <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
-          <div>
-            <h3 class="font-bold text-base text-brand-blue">Dr. S Satheesh Kumar</h3>
-            <p class="text-xs text-gray-600" id="doc1-spec">General Physician & Senior Specialist</p>
-            <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9840617727</p>
+    <!-- Top Blue Navbar -->
+    <header class="bg-brand-blue text-white p-4 sticky top-0 z-50 shadow-md">
+      <div class="max-w-4xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="bg-white p-2 rounded-xl text-brand-red flex items-center justify-center">
+            <i class="fa-solid fa-heart-pulse text-2xl text-red-600"></i>
           </div>
-          <a href="tel:9840617727" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
-            <i class="fa-solid fa-phone"></i>
-            <span id="btn-call-1">Call</span>
-          </a>
-        </div>
-
-        <!-- Doctor 2 -->
-        <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
           <div>
-            <h3 class="font-bold text-base text-brand-blue">Dr. G Vijayakumari</h3>
-            <p class="text-xs text-gray-600" id="doc2-spec">Senior Care Specialist</p>
-            <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9487667893</p>
+            <h1 class="text-2xl font-extrabold leading-tight" id="app-title">Senior Care</h1>
+            <p class="text-xs text-blue-100" id="app-subtitle">Healthcare & Tele-Consultation Companion</p>
           </div>
-          <a href="tel:9487667893" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
-            <i class="fa-solid fa-phone"></i>
-            <span id="btn-call-2">Call</span>
-          </a>
         </div>
-
-        <!-- Doctor 3 -->
-        <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
-          <div>
-            <h3 class="font-bold text-base text-brand-blue">Dr. G Jayakumari</h3>
-            <p class="text-xs text-gray-600" id="doc3-spec">Cardiologist (Heart Specialist)</p>
-            <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9481931546</p>
-          </div>
-          <a href="tel:9481931546" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
-            <i class="fa-solid fa-phone"></i>
-            <span id="btn-call-3">Call</span>
-          </a>
+        <div class="flex items-center space-x-3">
+          <!-- Audio Guide Button with Tamil / English Support -->
+          <button onclick="speakInstructions()" class="bg-transparent border-2 border-yellow-400 text-yellow-300 font-bold px-3 py-1.5 rounded-xl shadow text-sm hover:bg-yellow-400 hover:text-gray-900 transition flex items-center space-x-1">
+            <i class="fa-solid fa-volume-high"></i>
+            <span id="btn-voice-header">Audio Guide</span>
+          </button>
+          <!-- Language Switcher -->
+          <button onclick="toggleLanguage()" class="bg-white text-brand-blue font-bold px-3 py-1.5 rounded-xl shadow text-sm hover:bg-gray-100 transition flex items-center space-x-1">
+            <span id="lang-en" class="text-brand-blue font-bold">English</span>
+            <span class="text-gray-400">|</span>
+            <span id="lang-ta" class="text-gray-600 font-normal">தமிழ்</span>
+          </button>
         </div>
       </div>
-       
-      <!-- Tele-Consultation Form -->
-      <div class="border-t pt-4">
-        <h3 class="font-extrabold text-base mb-3 text-gray-800" id="appoint-title">Book Phone Consultation (NCD / Chronic)</h3>
-        <form onsubmit="bookAppointment(event)" class="space-y-3">
-          <select id="appoint-doctor" required class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-            <option value="">Select Doctor / மருத்துவர் தேர்ந்தெடுக்கவும்</option>
-            <option value="Dr S Satheesh Kumar">Dr. S Satheesh Kumar (9840617727)</option>
-            <option value="Dr G Vijayakumari">Dr. G Vijayakumari (9487667893)</option>
-            <option value="Dr G Jayakumari">Dr. G Jayakumari - Cardiologist (9481931546)</option>
-          </select>
-          <input type="date" id="appoint-date" required class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-          <textarea id="appoint-reason" rows="2" placeholder="Mention health concern (e.g. High BP, Joint Pain, Heart Care)" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue"></textarea>
-          <button type="submit" class="w-full bg-brand-amber text-white btn-senior rounded-xl font-bold shadow hover:bg-amber-700 transition">
-            <i class="fa-solid fa-calendar-check mr-2"></i><span id="btn-book">Confirm Phone Appointment</span>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-4 space-y-5">
+
+      <!-- Red SOS Emergency Ambulance Card -->
+      <div class="bg-red-600 text-white rounded-3xl p-6 shadow-xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center space-x-4">
+            <div class="bg-white text-red-600 p-4 rounded-2xl shadow-inner flex items-center justify-center">
+              <i class="fa-solid fa-truck-medical text-3xl"></i>
+            </div>
+            <div>
+              <span class="bg-red-800 text-red-100 text-xs uppercase font-extrabold px-3 py-1 rounded-full tracking-wider" id="sos-badge">24/7 Government Emergency</span>
+              <h2 class="text-2xl font-extrabold mt-1" id="sos-title">Need Immediate Medical Assistance?</h2>
+              <p class="text-sm text-red-100" id="sos-desc">Instant 108 Ambulance dispatch and priority emergency triage</p>
+            </div>
+          </div>
+          <button onclick="triggerSOS()" class="bg-yellow-400 text-gray-900 font-black px-6 py-4 rounded-2xl shadow-lg border-2 border-yellow-300 text-lg hover:bg-yellow-300 active:scale-95 transition flex items-center justify-center space-x-2 whitespace-nowrap w-full md:w-auto">
+            <i class="fa-solid fa-phone"></i>
+            <span id="sos-btn-text">CALL AMBULANCE (108)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs Bar -->
+      <div class="bg-white rounded-2xl p-2 shadow high-contrast-card flex items-center justify-between gap-1 overflow-x-auto">
+        <button onclick="switchTab('profile')" id="nav-profile" class="tab-btn active flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 transition">
+          <i class="fa-solid fa-id-card text-lg"></i>
+          <span id="tab-txt-profile">Profile</span>
+        </button>
+        <button onclick="switchTab('symptoms')" id="nav-symptoms" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
+          <i class="fa-solid fa-stethoscope text-lg"></i>
+          <span id="tab-txt-symptoms">Symptoms & Care</span>
+        </button>
+        <button onclick="switchTab('doctors')" id="nav-doctors" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
+          <i class="fa-solid fa-user-doctor text-lg"></i>
+          <span id="tab-txt-doctors">Doctors</span>
+        </button>
+        <button onclick="switchTab('pills')" id="nav-pills" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
+          <i class="fa-solid fa-pills text-lg"></i>
+          <span id="tab-txt-pills">Pill Reminders</span>
+        </button>
+        <button onclick="switchTab('vitals')" id="nav-vitals" class="tab-btn flex-1 py-3 px-2 rounded-xl text-sm font-bold flex flex-col items-center justify-center space-y-1 text-gray-600 transition">
+          <i class="fa-solid fa-heart-pulse text-lg"></i>
+          <span id="tab-txt-vitals">Vitals Log</span>
+        </button>
+      </div>
+
+      <!-- TAB 1: Patient Basic Profile Registration -->
+      <section id="sec-profile" class="tab-content bg-white p-6 rounded-2xl shadow high-contrast-card">
+        <div class="flex items-center justify-between border-b pb-3 mb-4">
+          <div>
+            <h2 class="font-extrabold text-xl text-gray-800" id="profile-title">Patient Basic Registration</h2>
+            <p class="text-xs text-gray-500" id="profile-subtitle">Stored locally on device for hospital check-ins and tele-consultations</p>
+          </div>
+          <span class="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-bold flex items-center">
+            <i class="fa-solid fa-lock mr-1"></i> Encrypted & Local
+          </span>
+        </div>
+        <form id="patient-form" onsubmit="savePatientInfo(event)" class="space-y-4">
+          <div>
+            <label class="block font-bold text-sm mb-1" id="lbl-name">Full Name / பெயர்</label>
+            <input type="text" id="patient-name" required placeholder="e.g. Ramasamy M" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-sm mb-1" id="lbl-mobile">Mobile Number / கைபேசி எண்</label>
+            <input type="tel" id="patient-mobile" required pattern="[0-9]{10}" placeholder="10-digit mobile number" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-sm mb-1" id="lbl-aadhar">ID Verification / அடையாள அட்டை</label>
+            <input type="text" id="patient-aadhar" required placeholder="[ID Card Number Redacted]" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-base focus:border-brand-blue outline-none">
+            <p class="text-xs text-gray-500 mt-1" id="aadhar-note">Stored securely for emergency hospital admission</p>
+          </div>
+          <button type="submit" class="w-full bg-brand-blue text-white btn-senior rounded-xl shadow hover:bg-blue-800 transition text-base">
+            <i class="fa-solid fa-floppy-disk mr-2"></i><span id="btn-save-patient">Save Patient Profile</span>
           </button>
         </form>
-      </div>
-    </section>
+      </section>
 
-    <!-- TAB 4: Daily Tablet & Medicine Tracker (Pill Reminders with Time Windows & Auto-Alarm) -->
-    <section id="sec-pills" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
-      <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-3">
-        <div>
-          <h2 class="font-extrabold text-xl text-gray-800" id="pill-title">Daily Tablet & Medicine Tracker</h2>
-          <p class="text-xs text-gray-500" id="pill-subtitle">Set time windows. Automatic alarm triggers if medicine is missed!</p>
-        </div>
-        <button onclick="testAlarmSound()" class="bg-yellow-400 text-gray-900 font-bold px-4 py-2.5 rounded-xl shadow text-sm hover:bg-yellow-300 transition flex items-center justify-center space-x-2">
-          <i class="fa-solid fa-bell"></i>
-          <span id="btn-test-alarm">Test Alarm Sound</span>
-        </button>
-      </div>
-
-      <!-- Missed Medication Alarm Warning Banner -->
-      <div id="alarm-banner" class="hidden bg-red-600 text-white p-4 rounded-2xl mb-5 shadow-lg animate-pulse flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
+      <!-- TAB 2: Diseases, Symptoms, Remedies & Medicines -->
+      <section id="sec-symptoms" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
+        <div class="flex items-center justify-between border-b pb-3 mb-4">
           <div>
-            <h4 class="font-black text-base" id="alarm-banner-title">MEDICINE MISSED ALARM!</h4>
-            <p class="text-xs text-red-100" id="alarm-banner-desc">Patient has not taken scheduled medicine within the given time window!</p>
+            <h2 class="font-extrabold text-xl text-gray-800" id="symptoms-title">Symptoms & Care Guidelines</h2>
+            <p class="text-xs text-gray-500" id="symptoms-subtitle">Choose your symptom to view first aid, tablets, and diet recommendations</p>
           </div>
         </div>
-        <button onclick="dismissAlarm()" class="bg-white text-red-700 font-bold px-3 py-1.5 rounded-xl text-xs">Dismiss</button>
-      </div>
 
-      <!-- Add Medicine Input Form with Two Times (Start & End Time) -->
-      <div class="bg-emerald-50/60 p-4 border-2 border-emerald-100 rounded-2xl mb-6">
-        <form onsubmit="addPillReminder(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3">
-          <div class="md:col-span-1">
-            <label class="block font-bold text-xs mb-1 text-gray-700">Medicine / Tablet Name</label>
-            <input type="text" id="pill-name" required placeholder="e.g. Amlodipine 5mg" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
-          </div>
+        <!-- Filter Buttons -->
+        <div class="flex space-x-2 mb-4">
+          <button onclick="filterDiseases('all')" id="tab-all" class="flex-1 py-2 text-xs font-bold rounded-xl bg-brand-blue text-white">All</button>
+          <button onclick="filterDiseases('infectious')" id="tab-inf" class="flex-1 py-2 text-xs font-bold rounded-xl bg-gray-200 text-gray-800">Infectious</button>
+          <button onclick="filterDiseases('chronic')" id="tab-chr" class="flex-1 py-2 text-xs font-bold rounded-xl bg-gray-200 text-gray-800">Chronic (NCD)</button>
+        </div>
+
+        <!-- Disease Search Box -->
+        <div class="mb-4">
+          <input type="text" id="disease-search" oninput="renderDiseases()" placeholder="Search symptom / நோய் தேடுக..." class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+        </div>
+
+        <!-- Disease Cards List -->
+        <div id="disease-list" class="space-y-4">
+          <!-- Dynamic Cards -->
+        </div>
+      </section>
+
+      <!-- TAB 3: Nearby Doctor Contacts & Tele-Appointment -->
+      <section id="sec-doctors" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
+        <div class="flex items-center space-x-2 border-b pb-3 mb-4">
+          <i class="fa-solid fa-user-doctor text-brand-blue text-2xl"></i>
           <div>
-            <label class="block font-bold text-xs mb-1 text-gray-700">Start Time (From)</label>
-            <input type="time" id="pill-start" required class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
+            <h2 class="font-extrabold text-xl text-gray-800" id="doctor-title">Nearby Doctors & Tele-Consultation</h2>
+            <p class="text-xs text-gray-500" id="doctor-subtitle">Direct phone dialers & consultation requests</p>
           </div>
-          <div>
-            <label class="block font-bold text-xs mb-1 text-gray-700">End Time (To - Deadline)</label>
-            <input type="time" id="pill-end" required class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
+        </div>
+
+        <!-- Doctor Contact Cards -->
+        <div class="space-y-3 mb-6">
+          <!-- Doctor 1 -->
+          <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-base text-brand-blue">Dr. S Satheesh Kumar</h3>
+              <p class="text-xs text-gray-600" id="doc1-spec">General Physician & Senior Specialist</p>
+              <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9486817727</p>
+            </div>
+            <a href="tel:9486817727" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
+              <i class="fa-solid fa-phone"></i>
+              <span id="btn-call-1">Call</span>
+            </a>
           </div>
-          <div class="flex items-end">
-            <button type="submit" class="w-full bg-emerald-700 text-white font-bold p-3 rounded-xl shadow hover:bg-emerald-800 transition text-sm flex items-center justify-center space-x-1">
-              <i class="fa-solid fa-plus"></i>
-              <span>Add Reminder</span>
+
+          <!-- Doctor 2 -->
+          <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-base text-brand-blue">Dr. G Vijayakumari</h3>
+              <p class="text-xs text-gray-600" id="doc2-spec">Senior Care Specialist</p>
+              <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9487667893</p>
+            </div>
+            <a href="tel:9487667893" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
+              <i class="fa-solid fa-phone"></i>
+              <span id="btn-call-2">Call</span>
+            </a>
+          </div>
+
+          <!-- Doctor 3 -->
+          <div class="p-4 border-2 border-blue-100 bg-blue-50/40 rounded-2xl flex items-center justify-between">
+            <div>
+              <h3 class="font-bold text-base text-brand-blue">Dr. G Jayakumari</h3>
+              <p class="text-xs text-gray-600" id="doc3-spec">Cardiologist (Heart Specialist)</p>
+              <p class="text-xs text-brand-blue font-semibold mt-1"><i class="fa-solid fa-phone mr-1"></i>9481931546</p>
+            </div>
+            <a href="tel:9481931546" class="bg-brand-green text-white px-4 py-2.5 rounded-xl text-sm font-bold flex items-center space-x-1 hover:bg-green-800">
+              <i class="fa-solid fa-phone"></i>
+              <span id="btn-call-3">Call</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tele-Consultation Form -->
+        <div class="border-t pt-4">
+          <h3 class="font-extrabold text-base mb-3 text-gray-800" id="appoint-title">Book Phone Consultation (NCD / Chronic)</h3>
+          <form onsubmit="bookAppointment(event)" class="space-y-3">
+            <select id="appoint-doctor" required class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+              <option value="">Select Doctor / மருத்துவர் தேர்ந்தெடுக்கவும்</option>
+              <option value="Dr S Satheesh Kumar">Dr. S Satheesh Kumar (9486817727)</option>
+              <option value="Dr G Vijayakumari">Dr. G Vijayakumari (9487667893)</option>
+              <option value="Dr G Jayakumari">Dr. G Jayakumari - Cardiologist (9481931546)</option>
+            </select>
+            <input type="date" id="appoint-date" required class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+            <textarea id="appoint-reason" rows="2" placeholder="Mention health concern (e.g. High BP, Joint Pain, Heart Care)" class="w-full p-3.5 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue"></textarea>
+            <button type="submit" class="w-full bg-brand-amber text-white btn-senior rounded-xl font-bold shadow hover:bg-amber-700 transition">
+              <i class="fa-solid fa-calendar-check mr-2"></i><span id="btn-book">Confirm Phone Appointment</span>
             </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Reminders List Cards -->
-      <div id="pills-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Dynamic Pill Cards -->
-      </div>
-    </section>
-
-    <!-- TAB 5: Blood Pressure & Sugar Tracker (Vitals Log) -->
-    <section id="sec-vitals" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
-      <div class="border-b pb-4 mb-4">
-        <h2 class="font-extrabold text-xl text-gray-800" id="vitals-title">Blood Pressure & Sugar Tracker</h2>
-        <p class="text-xs text-gray-500" id="vitals-subtitle">Log daily health vitals to show doctors during tele-consultation.</p>
-      </div>
-
-      <!-- Vitals Input Form -->
-      <form onsubmit="recordVitals(event)" class="bg-blue-50/50 p-4 border-2 border-blue-100 rounded-2xl mb-6 space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label class="block font-bold text-xs mb-1 text-gray-700">Systolic BP (Upper)</label>
-            <input type="number" id="vitals-sys" required min="70" max="240" placeholder="120" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-          </div>
-          <div>
-            <label class="block font-bold text-xs mb-1 text-gray-700">Diastolic BP (Lower)</label>
-            <input type="number" id="vitals-dia" required min="40" max="140" placeholder="80" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-          </div>
-          <div>
-            <label class="block font-bold text-xs mb-1 text-gray-700">Blood Sugar (mg/dL)</label>
-            <input type="number" id="vitals-sugar" required min="50" max="500" placeholder="110" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
-          </div>
+          </form>
         </div>
-        <button type="submit" class="w-full bg-brand-blue text-white font-bold py-3.5 rounded-xl shadow hover:bg-blue-800 transition text-sm flex items-center justify-center space-x-2">
-          <i class="fa-solid fa-heart-pulse"></i>
-          <span>Record Daily Vitals</span>
-        </button>
-      </form>
+      </section>
 
-      <!-- Vitals Evaluation Result Display Banner -->
-      <div id="vitals-eval-card" class="hidden p-5 rounded-2xl border-2 mb-6 transition-all">
-        <!-- Rendered dynamically -->
-      </div>
+      <!-- TAB 4: Daily Tablet & Medicine Tracker (Pill Reminders with Time Windows & Auto-Alarm) -->
+      <section id="sec-pills" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-3">
+          <div>
+            <h2 class="font-extrabold text-xl text-gray-800" id="pill-title">Daily Tablet & Medicine Tracker</h2>
+            <p class="text-xs text-gray-500" id="pill-subtitle">Set time windows. Automatic alarm triggers if medicine is missed!</p>
+          </div>
+          <button onclick="testAlarmSound()" class="bg-yellow-400 text-gray-900 font-bold px-4 py-2.5 rounded-xl shadow text-sm hover:bg-yellow-300 transition flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-bell"></i>
+            <span id="btn-test-alarm">Test Alarm Sound</span>
+          </button>
+        </div>
 
-      <!-- Past Vitals History -->
-      <div>
-        <h3 class="font-bold text-sm mb-3 text-gray-800">Recent Vitals Records</h3>
-        <div id="vitals-history-list" class="space-y-2">
+        <!-- Missed Medication Alarm Warning Banner -->
+        <div id="alarm-banner" class="hidden bg-red-600 text-white p-4 rounded-2xl mb-5 shadow-lg animate-pulse flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <i class="fa-solid fa-triangle-exclamation text-3xl"></i>
+            <div>
+              <h4 class="font-black text-base" id="alarm-banner-title">MEDICINE MISSED ALARM!</h4>
+              <p class="text-xs text-red-100" id="alarm-banner-desc">Patient has not taken scheduled medicine within the given time window!</p>
+            </div>
+          </div>
+          <button onclick="dismissAlarm()" class="bg-white text-red-700 font-bold px-3 py-1.5 rounded-xl text-xs">Dismiss</button>
+        </div>
+
+        <!-- Add Medicine Input Form with Two Times (Start & End Time) -->
+        <div class="bg-emerald-50/60 p-4 border-2 border-emerald-100 rounded-2xl mb-6">
+          <form onsubmit="addPillReminder(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            <div class="md:col-span-1">
+              <label class="block font-bold text-xs mb-1 text-gray-700">Medicine / Tablet Name</label>
+              <input type="text" id="pill-name" required placeholder="e.g. Amlodipine 5mg" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
+            </div>
+            <div>
+              <label class="block font-bold text-xs mb-1 text-gray-700">Start Time (From)</label>
+              <input type="time" id="pill-start" required class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
+            </div>
+            <div>
+              <label class="block font-bold text-xs mb-1 text-gray-700">End Time (To - Deadline)</label>
+              <input type="time" id="pill-end" required class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-emerald-600">
+            </div>
+            <div class="flex items-end">
+              <button type="submit" class="w-full bg-emerald-700 text-white font-bold p-3 rounded-xl shadow hover:bg-emerald-800 transition text-sm flex items-center justify-center space-x-1">
+                <i class="fa-solid fa-plus"></i>
+                <span>Add Reminder</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Reminders List Cards -->
+        <div id="pills-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Dynamic Pill Cards -->
+        </div>
+      </section>
+
+      <!-- TAB 5: Blood Pressure & Sugar Tracker (Vitals Log) -->
+      <section id="sec-vitals" class="tab-content hidden bg-white p-6 rounded-2xl shadow high-contrast-card">
+        <div class="border-b pb-4 mb-4">
+          <h2 class="font-extrabold text-xl text-gray-800" id="vitals-title">Blood Pressure & Sugar Tracker</h2>
+          <p class="text-xs text-gray-500" id="vitals-subtitle">Log daily health vitals to show doctors during tele-consultation.</p>
+        </div>
+
+        <!-- Vitals Input Form -->
+        <form onsubmit="recordVitals(event)" class="bg-blue-50/50 p-4 border-2 border-blue-100 rounded-2xl mb-6 space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block font-bold text-xs mb-1 text-gray-700">Systolic BP (Upper)</label>
+              <input type="number" id="vitals-sys" required min="70" max="240" placeholder="120" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+            </div>
+            <div>
+              <label class="block font-bold text-xs mb-1 text-gray-700">Diastolic BP (Lower)</label>
+              <input type="number" id="vitals-dia" required min="40" max="140" placeholder="80" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+            </div>
+            <div>
+              <label class="block font-bold text-xs mb-1 text-gray-700">Blood Sugar (mg/dL)</label>
+              <input type="number" id="vitals-sugar" required min="50" max="500" placeholder="110" class="w-full p-3 border-2 border-gray-300 rounded-xl text-sm outline-none focus:border-brand-blue">
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-brand-blue text-white font-bold py-3.5 rounded-xl shadow hover:bg-blue-800 transition text-sm flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-heart-pulse"></i>
+            <span>Record Daily Vitals</span>
+          </button>
+        </form>
+
+        <!-- Vitals Evaluation Result Display Banner -->
+        <div id="vitals-eval-card" class="hidden p-5 rounded-2xl border-2 mb-6 transition-all">
           <!-- Rendered dynamically -->
         </div>
-      </div>
-    </section>
 
-  </main>
+        <!-- Past Vitals History -->
+        <div>
+          <h3 class="font-bold text-sm mb-3 text-gray-800">Recent Vitals Records</h3>
+          <div id="vitals-history-list" class="space-y-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </section>
 
-  <!-- JavaScript Application Logic -->
+    </main>
+  </div>
+
+  <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
   <script>
     let currentLang = 'en';
     let activeFilter = 'all';
@@ -447,15 +490,34 @@
       }
     ];
 
-    window.onload = function() {
-      loadSavedPatient();
-      renderDiseases();
-      renderPills();
-      renderVitalsHistory();
-      
-      // Start background alarm check interval (every 15 seconds)
-      setInterval(checkMissedMedicinesAlarm, 15000);
-    };
+    // ================= LOGIN & OTP LOGIC =================
+    function requestOTP() {
+      const mobile = document.getElementById('login-mobile').value;
+      if (mobile.length !== 10) {
+        alert(currentLang === 'en' ? "Please enter a valid 10-digit mobile number." : "சரியான 10 இலக்க கைபேசி எண்ணை உள்ளிடவும்.");
+        return;
+      }
+      document.getElementById('otp-group').classList.remove('hidden');
+      document.getElementById('btn-send-otp').classList.add('hidden');
+      document.getElementById('btn-verify-otp').classList.remove('hidden');
+      alert(currentLang === 'en' ? "OTP Sent Successfully! (Demo OTP: 1234)" : "OTP வெற்றிகரமாக அனுப்பப்பட்டது! (Demo OTP: 1234)");
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const otp = document.getElementById('login-otp').value;
+      if (otp === '1234' || otp.length === 4) {
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('main-app-container').classList.remove('hidden');
+        loadSavedPatient();
+        renderDiseases();
+        renderPills();
+        renderVitalsHistory();
+        setInterval(checkMissedMedicinesAlarm, 15000);
+      } else {
+        alert(currentLang === 'en' ? "Invalid OTP. Please enter 1234." : "தவறான OTP. 1234 என உள்ளிடவும்.");
+      }
+    }
 
     // Navigation Tab Switching
     function switchTab(tabId) {
@@ -598,7 +660,6 @@
       const banner = document.getElementById('alarm-banner');
       if (missedFound) {
         banner.classList.remove('hidden');
-        // Speak alert automatically in active language
         if ('speechSynthesis' in window && !window.speechSynthesis.speaking) {
           const alarmText = currentLang === 'en' 
             ? "Alarm! Attention please. Medicine time has passed. Please take your tablet immediately."
@@ -704,9 +765,9 @@
     }
 
     function loadSavedPatient() {
-      document.getElementById('patient-name').value = "xxxxx";
-      document.getElementById('patient-mobile').value = "yyyyyyyyyy";
-      document.getElementById('patient-aadhar').value = "xxxxxxxxxxxx";
+      document.getElementById('patient-name').value = "Ramasamy M";
+      document.getElementById('patient-mobile').value = "9876543210";
+      document.getElementById('patient-aadhar').value = "1234-5678-9012";
     }
 
     function bookAppointment(e) {
